@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "tiltTech",
-    "slug": "tiltTech",
+    "name": "angleSense",
+    "slug": "angleSense",
     "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/adaptive-icon.png",
@@ -15,22 +15,23 @@
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "NSMotionUsageDescription": "Allow $(tiltTech) to access your device motion."
+        "NSMotionUsageDescription": "Allow $(angleSense) to access your device motion."
       }
     },
     "android": {
+      "permissions": ["HIGH_SAMPLING_RATE_SENSORS"],
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#000000"
       },
-      "package": "mkulDev.tiltTech"
+      "package": "mkulDev.angleSense"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "def22e8b-22f4-430d-bacc-51963dcae58b"
+        "projectId": "bf324f38-b1da-4b21-a00f-a4a3d647c731"
       }
     }
   }

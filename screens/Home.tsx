@@ -14,8 +14,7 @@ interface AngleOption {
 
 export default function App() {
   const subscriptionRef = useRef(null)
-  const speed = () => Accelerometer.setUpdateInterval(20)
-  const angleRef = useRef<number[]>([])
+  const speed = () => Accelerometer.setUpdateInterval(50)
   const pointerPosition = useSharedValue(50)
   const [angle, setAngle] = useState<string>('0')
   const [category, setCategory] = useState<number>(0)
@@ -79,14 +78,28 @@ export default function App() {
 
   const _subscribe = () => {
     speed()
+    let angleSum = 0
+    let counter = 0
+
+    const normalizeAngle = (angle: number) => {
+      if (angle < -135) return 360 + angle
+      return angle
+    }
+
     subscriptionRef.current = Accelerometer.addListener((data) => {
       const { x, y, z } = data
-      const calculatedAngle = mode === 0 ? Math.atan2(y, z) * (180 / Math.PI) : Math.atan2(y, x) * (180 / Math.PI)
-      const currentMode = angleOption[category].angle
-      if (Array.isArray(angleRef.current) && angleRef.current.length < 10) angleRef.current.push(calculatedAngle)
-      if (angleRef.current.length === 10) {
-        const average = (angleRef.current.reduce((acc, curr) => acc + curr, 0) / 10).toFixed(1)
+      const calculatedAngle =
+        mode === 0
+          ? normalizeAngle(Math.atan2(y, z) * (180 / Math.PI))
+          : normalizeAngle(Math.atan2(y, x) * (180 / Math.PI))
 
+      const currentMode = angleOption[category].angle
+
+      angleSum += calculatedAngle
+      counter++
+
+      if (counter === 10) {
+        const average = (angleSum / counter).toFixed(1)
         const minPointerPosition = 5
         const maxPointerPosition = 95
         const pointerValue = Math.min(
@@ -101,7 +114,9 @@ export default function App() {
           damping: 10,
           stiffness: 40,
         })
-        angleRef.current = []
+
+        angleSum = 0
+        counter = 0
       }
     })
   }
@@ -120,8 +135,8 @@ export default function App() {
   return (
     <SafeAreaView className='bg-black'>
       <ImageBackground source={require('../assets/bg1.jpg')} resizeMode='cover' className='h-full bg-black'>
-        <View className='relative h-full w-full flex-col'>
-          <View className=' flex-1 w-full flex-row justify-center mt-[20px]'>
+        <View className='relative h-full w-full flex-col '>
+          <View className=' flex-1 w-full flex-row justify-center mt-[40px]'>
             <View className='h-full w-1/4 flex-col justify-center mr-2 pt-[10%]'>
               {angleOption.map((button, index) => (
                 <OptionBtn
@@ -161,13 +176,12 @@ export default function App() {
             </View>
           </View>
           <View className='flex-col w-full justify-center '>
-            <Text className='text-2xl font-bold text-[#fad43a] text-center mt-2'>Measure By:</Text>
-            <View className='w-full flex-row justify-center items-center'>
+            <Text className='text-2xl font-bold text-[#fad43a] text-center mt-4 '>Measure By:</Text>
+            <View className='w-full flex-row justify-center items-center mb-[40px]'>
               <ModeBtn id={0} mode={mode} title='Back of Phone' switchMeasureMetod={switchMeasureMetod} />
               <ModeBtn id={1} mode={mode} title='Left Edge' switchMeasureMetod={switchMeasureMetod} />
             </View>
           </View>
-          <View className='w-full h-[110px]'></View>
           {isModal && (
             <View
               className={`flex justify-center items-center absolute z-20 rounded-xl bg-[#1c1c1c]`}
@@ -183,7 +197,7 @@ export default function App() {
                 <TouchableOpacity
                   className='border-2 border-[#fad43a] rounded-r-lg'
                   onPress={() => switchCustomAngle(Number(inputData))}>
-                  <Text className='bg-[#fad43a]  text-sm px-4 py-3 font-bold shadow-md '>Accept</Text>
+                  <Text className='bg-[#fad43a] text-sm px-4 py-3 font-bold shadow-md '>Accept</Text>
                 </TouchableOpacity>
               </View>
             </View>
