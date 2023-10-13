@@ -156,6 +156,7 @@ export default function App() {
               </Animated.View>
               <Image
                 source={require('../assets/progressBar2.png')}
+                testID='progresBar'
                 alt='progres-bar'
                 className='h-full aspect-[1/6]'></Image>
             </View>
@@ -191,6 +192,7 @@ export default function App() {
                 <TextInput
                   value={inputData}
                   keyboardType='numeric'
+                  testID='input'
                   maxLength={3}
                   onChangeText={handleInput}
                   className='px-4 py-2 text-sm w-[100px] border-2 border-r-0 border-[#fad43a] text-[#fad43a] rounded-l-lg'></TextInput>

@@ -12,6 +12,7 @@ const OptionBtn = ({ id, title, category, handleSwitchCategory }: OptionBtnProps
   return (
     <TouchableOpacity
       onPress={() => handleSwitchCategory(id)}
+      accessibilityRole={'button'}
       className={`py-2 px-2 shadow-md ${
         category === id ? 'bg-[#fad43a] border-2 border-[#000]' : 'bg-black border-2 border-[#fad43a]'
       } rounded-md mt-4`}>

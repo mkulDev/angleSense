@@ -1,12 +1,5 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {},
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "App.ts",
-    "App.js",
-    "screens/Home.js",
-    "App.js"
-  ]
+  "include": ["**/*.ts", "**/*.tsx", "App.ts", "App.js", "screens/Home.js", "App.js"]
 }
